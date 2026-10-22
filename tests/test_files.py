@@ -3,6 +3,7 @@
 Windows 用の .bat は「Shift_JIS(cp932) ＋ CRLF」、.ps1 は「BOM付き UTF-8」でないと、
 日本語が文字化けして動かなくなります。エディタや AI が保存し直したときに壊れやすいので見張ります。
 """
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -88,7 +89,8 @@ def test_mac_command():
     for p in ROOT.glob("*.command"):
         raw = p.read_bytes()
         assert b"\r\n" not in raw, f"{p.name}: 改行は LF にしてください"
-        if shutil.which("bash"):
+        # Windows の bash は WSL（未設定だと動かない）の場合があるので、Mac・Linux でだけ文法を確かめる
+        if sys.platform != "win32" and shutil.which("bash"):
             assert subprocess.run(["bash", "-n", str(p)]).returncode == 0, f"{p.name} に文法エラー"
 
 

@@ -88,15 +88,16 @@ Windows 版は Windows で、Mac 版は Mac でビルドする必要がありま
 
 ### GitHub に自動で作らせる（おすすめ）
 
-`.github/workflows/build.yml` が、Windows と Mac の両方で自動ビルドします。
+`.github/workflows/build.yml` が、Windows と Mac の両方でテストとビルドを自動で行います。
 
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
+新しい版を公開するときは、次の3つだけです（タグを付ける必要はありません）。
 
-タグを push すると、テスト → Windows版・Mac版のビルド → Releases への公開まで自動で行われます。
-バージョン番号は `app/version.py` もそろえて更新してください。
+1. `app/version.py` のバージョン番号を上げる
+2. `CHANGELOG.md` にそのバージョンの変更内容を書く
+3. `main` ブランチに push する
+
+まだ公開していないバージョンなら、テスト → Windows 版・Mac 版のビルド → `v番号` のタグ付きで Releases に公開、まで自動で進みます。
+リリースノートには `CHANGELOG.md` のそのバージョンの部分が使われます。
 
 ## 修正・機能追加をする人へ（AI を含む）
 

@@ -45,7 +45,7 @@ Claude、ChatGPT、Codex、Copilot など、どの AI・どのセッションで
    - `.bat` を編集するときは、Python で `open(p, encoding="cp932", newline="")` のように読み書きする。
 6. **元のファイルを上書きしない設計を守る。** 変換結果は必ず別名・別フォルダに保存する。
 7. **ファイルはインターネットに送らない。** 外部 API・クラウド変換を勝手に追加しない。
-8. **バージョンと記録を更新する。** 機能を変えたら `app/version.py` の番号を上げ、`CHANGELOG.md` に日本語で追記する
+8. **バージョンと記録を更新する。** （`main` に push すると、未公開のバージョンなら GitHub が自動でビルドして Releases に公開する） 機能を変えたら `app/version.py` の番号を上げ、`CHANGELOG.md` に日本語で追記する
    （`tests/test_files.py` が CHANGELOG に今のバージョンがあるか見ている）。
 9. **git で記録する。** （持ち主の PC では、セットアップが `変更履歴.bundle` から `.git` を自動で復元する。
    `.git` が無い場合は git をインストールしてから「セットアップ（Windows）.bat」を実行し直す） 作業の前に `git status` で状態を確認し、区切りごとにコミットする。
