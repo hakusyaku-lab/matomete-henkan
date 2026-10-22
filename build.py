@@ -24,7 +24,9 @@ args = [
     "--collect-submodules", "webview",
 ]
 
-if sys.platform == "darwin":
+if sys.platform == "win32":
+    args += ["--icon", "icon.ico"]
+elif sys.platform == "darwin":
     args += ["--osx-bundle-identifier", "io.github.matomete-henkan"]
 
 PyInstaller.__main__.run(args)
