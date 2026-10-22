@@ -11,3 +11,4 @@ requirements*.txt text eol=lf
 *.xlsx binary
 # テスト用ファイルは中身（改行コード・文字コード）そのものが検査対象なので、git に一切変換させない
 samples/** -text
+*.command text eol=lf

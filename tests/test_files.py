@@ -39,7 +39,7 @@ def test_required_files_exist():
         "AGENTS.md", "CLAUDE.md", "CHANGELOG.md", "README.md", "docs/ARCHITECTURE.md", "docs/EXTENDING.md",
         "app/main.py", "app/version.py", "app/ui/index.html", "app/ui/app.js", "app/ui/style.css",
         "requirements.txt", "requirements-dev.txt", "icon.ico", "build.py", "scripts/check.py",
-        "scripts/create_shortcut.ps1", "scripts/find_python.ps1", "scripts/make_samples.py", "samples/読んでください.txt", "scripts/collect_pc_info.ps1", "使い方（Windows）.txt",
+        "scripts/create_shortcut.ps1", "scripts/find_python.ps1", "scripts/make_samples.py", "samples/読んでください.txt", "scripts/collect_pc_info.ps1", "使い方（Windows）.txt", "セットアップ（Mac）.command",
     ]:
         assert (ROOT / rel).exists(), f"{rel} がありません"
 
@@ -78,3 +78,31 @@ def test_ps1_syntax():
                f"'{p}', [ref]$null, [ref]$e); if ($e) {{ $e | % {{ $_.Message }}; exit 1 }}")
         r = subprocess.run([exe, "-NoProfile", "-Command", cmd], capture_output=True, text=True)
         assert r.returncode == 0, f"{p.name} に文法エラー: {r.stdout}{r.stderr}"
+
+
+def test_mac_command():
+    """Mac 用セットアップは LF 改行・bash の文法エラーなし。PC 固有のパスを含まない。"""
+    import shutil
+    import subprocess
+
+    for p in ROOT.glob("*.command"):
+        raw = p.read_bytes()
+        assert b"\r\n" not in raw, f"{p.name}: 改行は LF にしてください"
+        if shutil.which("bash"):
+            assert subprocess.run(["bash", "-n", str(p)]).returncode == 0, f"{p.name} に文法エラー"
+
+
+def test_no_machine_specific_paths():
+    """公開するファイルに、特定の PC のユーザー名・パスを書いていない。"""
+    import re
+
+    bad = re.compile(r"C:\\Users\\(?!<)[A-Za-z0-9_.-]+|/Users/[a-z0-9_.-]+/|/home/[a-z0-9_.-]+/", re.I)
+    for p in ROOT.rglob("*"):
+        if not p.is_file() or ".git" in p.parts or ".venv" in p.parts or "samples" in p.parts or p.name == "PC環境.md":
+            continue
+        if p.suffix.lower() not in {".md", ".py", ".js", ".html", ".css", ".ps1", ".bat", ".txt", ".yml", ".command"}:
+            continue
+        raw = p.read_bytes()
+        text = raw.decode("cp932" if p.suffix == ".bat" else "utf-8", errors="ignore")
+        m = bad.search(text)
+        assert not m, f"{p.relative_to(ROOT)} に PC 固有のパスがあります: {m.group(0)}"

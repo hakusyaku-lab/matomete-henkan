@@ -18,8 +18,9 @@ Claude、ChatGPT、Codex、Copilot など、どの AI・どのセッションで
 - 名前：まとめて変換（MatometeHenkan）
 - 中身：CSV・画像・PDF の変換を行うデスクトップアプリ（Windows 11 / Mac）
 - 作り：Python（変換処理）＋ HTML/JavaScript（画面）を pywebview でつないでいる
-- 持ち主の環境：Windows 11 x64。アプリ本体は `C:\Users\weyeo\tools\MatometeHenkan`
-- 起動：デスクトップの「まとめて変換」アイコン（中身は `.venv\Scripts\pythonw.exe app\main.py`）
+- 動く環境：Windows 10/11（x64）と macOS。アプリのフォルダはどこに置いてもよい（パスを決め打ちしない）
+- 起動：セットアップが作るデスクトップの「まとめて変換」アイコン
+  （Windows は `.venv\Scripts\pythonw.exe app\main.py`、Mac は `まとめて変換.command`）
 - 利用者は日本語話者。**画面の文言・エラーメッセージ・説明書はすべて日本語**で書く
 
 ## 2. 守ること（壊さないためのルール）
@@ -39,6 +40,7 @@ Claude、ChatGPT、Codex、Copilot など、どの AI・どのセッションで
 5. **ファイルの文字コードと改行を変えない。**
    - `*.bat`：Shift_JIS（cp932）＋ CRLF　← UTF-8 にすると日本語が化けて動かない
    - `*.ps1`：BOM 付き UTF-8 ＋ CRLF
+   - `*.command`（Mac 用）：UTF-8 ＋ LF、実行権限つき
    - それ以外：UTF-8（BOM なし）＋ LF
    - `.bat` を編集するときは、Python で `open(p, encoding="cp932", newline="")` のように読み書きする。
 6. **元のファイルを上書きしない設計を守る。** 変換結果は必ず別名・別フォルダに保存する。
@@ -48,7 +50,9 @@ Claude、ChatGPT、Codex、Copilot など、どの AI・どのセッションで
 9. **git で記録する。** （持ち主の PC では、セットアップが `変更履歴.bundle` から `.git` を自動で復元する。
    `.git` が無い場合は git をインストールしてから「セットアップ（Windows）.bat」を実行し直す） 作業の前に `git status` で状態を確認し、区切りごとにコミットする。
    壊れたら `git log` と `git diff` で原因を探し、必要なら `git restore` / `git revert` で戻す。
-10. 大きな作り替え（フォルダ構成の変更、ライブラリの入れ替え）は、持ち主に確認してから行う。
+10. **特定の PC に依存させない。** ユーザー名・フォルダの場所・PC 名などをコードや説明書に書かない（GitHub で公開している）。
+    その PC 固有の情報は `PC環境.md`（git に入れない）にだけ書く。
+11. 大きな作り替え（フォルダ構成の変更、ライブラリの入れ替え）は、持ち主に確認してから行う。
 
 ## 3. よく使うコマンド（Windows、アプリのフォルダで実行）
 

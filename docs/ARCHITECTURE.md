@@ -46,6 +46,7 @@
 | `samples/` | 動作確認用ファイル（架空のデータ）と確認項目 `読んでください.txt` | |
 | `scripts/create_shortcut.ps1` | デスクトップ／スタートメニューのアイコン作成 | |
 | `scripts/collect_pc_info.ps1` | `PC環境.md` の作成 | |
+| `セットアップ（Mac）.command` | Mac 用：Python 確認 → 部品のインストール → 起動用 `まとめて変換.command` をデスクトップへ → 起動 | |
 | `セットアップ（Windows）.bat` | Python・部品のインストール → PC環境の記録 → アイコン作成 → 起動 | |
 | `build.py` | 配布用 .exe / .app の作成（PyInstaller） | |
 | `.github/workflows/build.yml` | GitHub 上でのテストと Windows/Mac 版の自動ビルド | |

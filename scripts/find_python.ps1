@@ -71,7 +71,8 @@ if (-not $py) {
 }
 
 if ($py) {
-    [System.IO.File]::WriteAllText($OutFile, $py, (New-Object System.Text.UTF8Encoding($false)))
+    # cmd の set /p で読むため、Windows の既定の文字コード（日本語環境では Shift_JIS）で書く。日本語のユーザー名でも化けない
+    [System.IO.File]::WriteAllText($OutFile, $py, [System.Text.Encoding]::Default)
     exit 0
 }
 exit 1

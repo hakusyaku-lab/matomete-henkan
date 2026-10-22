@@ -38,10 +38,17 @@ Windows 10 で画面が表示されない場合は、Microsoft の「WebView2 �
 
 配布している Mac 版は Apple シリコン（M1 以降）用です。Intel の Mac では、下の「ソースから動かす」方法で使えます。
 
-### Windows（ビルドせずにそのまま使う）
+### ビルドせずにそのまま使う（Windows・Mac 共通のおすすめ）
 
-リポジトリを Code → Download ZIP でダウンロード・展開し、`セットアップ（Windows）.bat` をダブルクリックします。
-Python（なければ自動でインストール）と必要な部品を入れ、デスクトップとスタートメニューに「まとめて変換」のアイコンを作ります。詳しくは `使い方（Windows）.txt` を見てください。
+1. このページの緑の「Code」ボタン →「Download ZIP」でダウンロードし、好きな場所に展開します（場所はどこでも構いません）。
+2. 展開したフォルダの中のセットアップを実行します。
+   - **Windows**：`セットアップ（Windows）.bat` をダブルクリック
+     （Python が無ければ python.org の公式版を自動でインストールします。詳しくは `使い方（Windows）.txt`）
+   - **Mac**：`セットアップ（Mac）.command` を **右クリック →「開く」**
+     （Python 3.10 以上が必要です。無ければ https://www.python.org/downloads/macos/ から入れてください）
+3. 終わるとアプリが起動し、デスクトップに「まとめて変換」ができます。次からはそれで起動します。
+
+動作確認用のファイルが `samples/` に入っています（`samples/読んでください.txt` に確認手順があります）。
 
 ## ソースから動かす（開発する人）
 
@@ -126,6 +133,7 @@ scripts/
   create_shortcut.ps1  デスクトップ／スタートメニューのアイコン作成
   collect_pc_info.ps1  PC環境.md の作成
 セットアップ（Windows）.bat   Windows でのインストール
+セットアップ（Mac）.command  Mac でのインストール
 使い方（Windows）.txt        利用者向けの説明
 build.py             配布用アプリの作成
 .github/workflows/   Windows／Mac の自動テスト・ビルド
