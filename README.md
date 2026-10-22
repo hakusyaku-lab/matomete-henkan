@@ -118,9 +118,11 @@ app/
     mapping.py       ③ 列の対応付けとテンプレート
     pdf_tools.py     ④ PDF の結合・分割・抜き出し
   ui/                画面（HTML／CSS／JavaScript）
+samples/             動作確認用のテストファイル（架空のデータ）と確認項目
 tests/               自動テスト（変換処理・名前の一致・文字コード・画面操作）
 scripts/
   check.py           全体チェック（修正したら必ず実行）
+  make_samples.py    samples/ の作り直し
   create_shortcut.ps1  デスクトップ／スタートメニューのアイコン作成
   collect_pc_info.ps1  PC環境.md の作成
 セットアップ（Windows）.bat   Windows でのインストール

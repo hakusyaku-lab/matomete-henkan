@@ -40,7 +40,10 @@
 | `tests/test_contract.py` | 画面と Python の名前の食い違い検査 | |
 | `tests/test_files.py` | 文字コード・改行・必要ファイル・CHANGELOG の検査 | |
 | `tests/test_ui_smoke.py` + `tests/ui/mock_api.js` | 画面を実際に操作する検査（Python はにせ物） | |
+| `tests/test_samples.py` | テスト用ファイルが確認項目どおりに変換されるかの検査 | |
 | `scripts/check.py` | 上の検査をまとめて実行 | |
+| `scripts/make_samples.py` | `samples/`（テスト用ファイル）の作成 | |
+| `samples/` | 動作確認用ファイル（架空のデータ）と確認項目 `読んでください.txt` | |
 | `scripts/create_shortcut.ps1` | デスクトップ／スタートメニューのアイコン作成 | |
 | `scripts/collect_pc_info.ps1` | `PC環境.md` の作成 | |
 | `セットアップ（Windows）.bat` | Python・部品のインストール → PC環境の記録 → アイコン作成 → 起動 | |

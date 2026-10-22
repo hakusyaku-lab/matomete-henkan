@@ -62,7 +62,15 @@ Claude、ChatGPT、Codex、Copilot など、どの AI・どのセッションで
 | 開発者ツール付きで起動 | `set MATOMETE_DEBUG=1` のあと上と同じ |
 | 配布用 .exe を作る | `.venv\Scripts\python.exe build.py` |
 
-## 4. 困ったとき
+## 4. テスト用ファイル
+
+- `samples/` に4機能それぞれの動作確認用ファイルがある（すべて架空のデータ）。確認項目は `samples/読んでください.txt`。
+- 作り直すとき：`python scripts/make_samples.py`（`requirements-dev.txt` の reportlab が必要）。
+- `tests/test_samples.py` が「読んでください.txt」の内容どおりに変換されるかを検査している。
+  機能を足したら、サンプル・確認項目・この検査の3つをそろえて足す。
+- **サンプルに実在の個人情報（名前・電話番号・口座番号・メールアドレスなど）を入れない。**
+
+## 5. 困ったとき
 
 - 画面が真っ白：`MATOMETE_DEBUG=1` で起動し、開発者ツールのコンソールのエラーを見る。
 - アイコンから起動して何も出ない：`python.exe app\main.py`（pythonw ではなく）で起動するとエラーが表示される。

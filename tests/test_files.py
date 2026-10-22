@@ -39,7 +39,7 @@ def test_required_files_exist():
         "AGENTS.md", "CLAUDE.md", "CHANGELOG.md", "README.md", "docs/ARCHITECTURE.md", "docs/EXTENDING.md",
         "app/main.py", "app/version.py", "app/ui/index.html", "app/ui/app.js", "app/ui/style.css",
         "requirements.txt", "requirements-dev.txt", "icon.ico", "build.py", "scripts/check.py",
-        "scripts/create_shortcut.ps1", "scripts/find_python.ps1", "scripts/collect_pc_info.ps1", "使い方（Windows）.txt",
+        "scripts/create_shortcut.ps1", "scripts/find_python.ps1", "scripts/make_samples.py", "samples/読んでください.txt", "scripts/collect_pc_info.ps1", "使い方（Windows）.txt",
     ]:
         assert (ROOT / rel).exists(), f"{rel} がありません"
 

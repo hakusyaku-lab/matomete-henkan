@@ -37,8 +37,9 @@
 5. **にせ Python**：`tests/ui/mock_api.js` に、追加した Api 関数のにせ物を追加
 6. **画面テスト**：`tests/test_ui_smoke.py` に、その画面を操作するテストを追加
 7. 依存ライブラリを足した場合は `requirements.txt`（＋ PyInstaller で必要なら `build.py` の `--collect-all`）
-8. `README.md` の「できること」の表、`docs/ARCHITECTURE.md` のファイル表、`CHANGELOG.md`、`app/version.py` を更新
-9. `scripts/check.py` → 合格したらコミット
+8. `scripts/make_samples.py` にその機能用のテストファイルと確認項目を足し、`tests/test_samples.py` に検査を足す
+9. `README.md` の「できること」の表、`docs/ARCHITECTURE.md` のファイル表、`CHANGELOG.md`、`app/version.py` を更新
+10. `scripts/check.py` → 合格したらコミット
 
 ## D. 不具合を直す
 

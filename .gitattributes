@@ -9,3 +9,5 @@ requirements*.txt text eol=lf
 *.jpg binary
 *.pdf binary
 *.xlsx binary
+# テスト用ファイルは中身（改行コード・文字コード）そのものが検査対象なので、git に一切変換させない
+samples/** -text
