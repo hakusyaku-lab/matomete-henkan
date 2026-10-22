@@ -1,0 +1,7 @@
+pywebview>=5.3,<7
+pillow>=10.3
+pillow-heif>=0.16
+pypdf>=4.2
+pypdfium2>=4.30
+openpyxl>=3.1
+charset-normalizer>=3.3

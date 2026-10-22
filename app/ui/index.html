@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>まとめて変換</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <nav class="side" aria-label="機能">
+    <div class="brand">まとめて変換</div>
+    <button type="button" class="nav-item active" data-view="csv">CSV 変換・結合</button>
+    <button type="button" class="nav-item" data-view="image">画像一括変換</button>
+    <button type="button" class="nav-item" data-view="map">CSV 形式変換</button>
+    <button type="button" class="nav-item" data-view="pdf">PDF 結合・分割</button>
+    <div class="spacer"></div>
+    <div class="side-note">ファイルはこのPCの中だけで処理されます</div>
+    <div class="side-note" id="version"></div>
+  </nav>
+
+  <main>
+    <!-- ① CSV 変換・結合 -->
+    <section class="view active" id="view-csv" aria-labelledby="h-csv">
+      <header class="view-head">
+        <h1 id="h-csv">CSV 変換・結合</h1>
+        <p>文字コードを自動判定し、複数のCSVを1つにまとめて整形します</p>
+      </header>
+      <div class="drop" data-kind="csv">
+        <svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+        <div class="drop-title">ここにCSV・TXTファイルをドラッグ（複数可）</div>
+        <button type="button" class="btn" data-pick="csv">ファイルを選ぶ</button>
+      </div>
+      <div class="row">
+        <section class="card grow3">
+          <div class="card-head">
+            <h2>読み込んだファイル（<span id="csv-count">0</span>件）</h2>
+            <button type="button" class="link-btn" id="csv-clear">すべて外す</button>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th>ファイル名</th><th>文字コード（自動判定）</th><th class="num">行数</th><th class="num">列数</th><th><span class="sr">操作</span></th></tr></thead>
+              <tbody id="csv-files"><tr class="empty"><td colspan="5">まだファイルがありません</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="card grow2 options">
+          <h2>整形オプション</h2>
+          <label class="check"><input type="checkbox" id="opt-protect" checked>先頭の0を保護（Excel出力時）</label>
+          <label class="check"><input type="checkbox" id="opt-hankaku" checked>全角の英数字を半角にそろえる</label>
+          <label class="check"><input type="checkbox" id="opt-kana">半角カナを全角にそろえる</label>
+          <label class="check"><input type="checkbox" id="opt-wareki">和暦を西暦に変換</label>
+          <label class="check"><input type="checkbox" id="opt-kishu" checked>機種依存文字を置き換え（㈱→(株)）</label>
+          <label class="check"><input type="checkbox" id="opt-trim">前後の空白を削除</label>
+          <label class="check"><input type="checkbox" id="opt-source">「元ファイル」の列を追加</label>
+        </section>
+      </div>
+      <section class="card actionbar">
+        <div class="label">出力形式</div>
+        <div class="seg" role="group" aria-label="出力形式" id="csv-fmt">
+          <button type="button" data-fmt="xlsx" class="on">Excel（.xlsx）</button>
+          <button type="button" data-fmt="csv_utf8">CSV（UTF-8 BOM付き）</button>
+          <button type="button" data-fmt="csv_sjis">CSV（Shift_JIS）</button>
+          <button type="button" data-fmt="json">JSON</button>
+        </div>
+        <div class="spacer"></div>
+        <button type="button" class="btn primary" id="csv-run" disabled>保存</button>
+      </section>
+      <div id="csv-notices" class="notices"></div>
+    </section>
+
+    <!-- ② 画像一括変換 -->
+    <section class="view" id="view-image" aria-labelledby="h-image">
+      <header class="view-head with-action">
+        <div>
+          <h1 id="h-image">画像一括変換</h1>
+          <p>サイズ・形式・余白をそろえて、まとめて書き出します</p>
+        </div>
+        <button type="button" class="btn" data-pick="image">画像を追加</button>
+      </header>
+      <div class="row">
+        <section class="card grow3">
+          <div class="card-head">
+            <h2>読み込んだ画像（<span id="img-count">0</span>枚）</h2>
+            <button type="button" class="link-btn" id="img-clear">すべて外す</button>
+          </div>
+          <div class="thumbs drop" data-kind="image" id="img-grid">
+            <div class="drop-empty">ここに画像をドラッグ（JPEG・PNG・WebP・HEIC など）</div>
+          </div>
+        </section>
+        <section class="card grow2 options">
+          <h2>変換の設定</h2>
+          <div class="field">
+            <div class="label">出力形式</div>
+            <div class="seg" role="group" aria-label="出力形式" id="img-fmt">
+              <button type="button" data-fmt="jpeg" class="on">JPEG</button>
+              <button type="button" data-fmt="png">PNG</button>
+              <button type="button" data-fmt="webp">WebP</button>
+            </div>
+          </div>
+          <label class="check" id="img-lossless-wrap" hidden><input type="checkbox" id="img-lossless">WebP を無劣化で保存</label>
+          <label class="field"><span class="label">長辺のサイズ</span>
+            <select id="img-size">
+              <option value="0">元のサイズのまま</option>
+              <option value="800">800px</option>
+              <option value="1000">1000px</option>
+              <option value="1200" selected>1200px</option>
+              <option value="1600">1600px</option>
+              <option value="2000">2000px</option>
+              <option value="3000">3000px</option>
+            </select>
+          </label>
+          <label class="field" id="img-quality-wrap"><span class="label">品質：<span id="img-quality-val">85</span></span>
+            <input type="range" id="img-quality" min="50" max="100" value="85">
+          </label>
+          <label class="check"><input type="checkbox" id="img-square">正方形にする（白い余白を追加）</label>
+          <label class="check"><input type="checkbox" id="img-gps" checked>位置情報（撮影場所）を削除</label>
+          <label class="check"><input type="checkbox" id="img-seq">ファイル名を連番にする</label>
+          <label class="field" id="img-prefix-wrap" hidden><span class="label">連番の名前</span>
+            <input type="text" id="img-prefix" value="image" maxlength="40">
+          </label>
+        </section>
+      </div>
+      <div class="bottom">
+        <div id="img-notices" class="notices grow"></div>
+        <button type="button" class="btn primary" id="img-run" disabled>まとめて変換</button>
+      </div>
+    </section>
+
+    <!-- ③ CSV 形式変換 -->
+    <section class="view" id="view-map" aria-labelledby="h-map">
+      <header class="view-head">
+        <h1 id="h-map">CSV 形式変換（列の対応付け）</h1>
+        <p>一度対応付けを保存すれば、次回からはファイルを入れるだけで変換できます</p>
+      </header>
+      <section class="card toolbar">
+        <label class="field grow"><span class="label">変換テンプレート</span>
+          <select id="map-tpl"><option value="">（テンプレートを使わない）</option></select>
+        </label>
+        <label class="field grow"><span class="label">テンプレート名</span>
+          <input type="text" id="map-tpl-name" placeholder="例：モールA → モールB" maxlength="80">
+        </label>
+        <button type="button" class="btn" id="map-tpl-save">テンプレートとして保存</button>
+        <button type="button" class="btn ghost" id="map-tpl-del" disabled>削除</button>
+      </section>
+      <section class="card toolbar drop" data-kind="map">
+        <button type="button" class="btn" id="map-src-pick">元のCSVを選ぶ</button>
+        <div class="grow muted" id="map-src-info">元のCSVをここにドラッグするか、ボタンで選んでください</div>
+      </section>
+      <section class="card">
+        <div class="card-head">
+          <h2>列の対応</h2>
+          <div class="head-actions">
+            <button type="button" class="link-btn" id="map-from-sample">変換先の見本CSVから列を読み込む</button>
+            <button type="button" class="link-btn" id="map-copy-all">元の列をすべて並べる</button>
+            <button type="button" class="link-btn" id="map-add">＋ 列を追加</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table map-table">
+            <thead><tr><th>変換先の列</th><th>元の列</th><th>加工</th><th><span class="sr">操作</span></th></tr></thead>
+            <tbody id="map-rows"><tr class="empty"><td colspan="4">「＋ 列を追加」か「見本CSVから列を読み込む」で始めます</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="card">
+        <h2>変換後のプレビュー（先頭3行）</h2>
+        <div class="table-wrap"><table class="table small" id="map-preview"><tbody><tr class="empty"><td>元のCSVと列の対応を設定すると表示されます</td></tr></tbody></table></div>
+      </section>
+      <div class="bottom">
+        <label class="field inline"><span class="label">出力の文字コード</span>
+          <select id="map-enc">
+            <option value="utf-8-sig">UTF-8（BOM付き）</option>
+            <option value="utf-8">UTF-8（BOMなし）</option>
+            <option value="cp932">Shift_JIS</option>
+          </select>
+        </label>
+        <div class="spacer"></div>
+        <button type="button" class="btn primary" id="map-run" disabled>変換して保存</button>
+      </div>
+    </section>
+
+    <!-- ④ PDF -->
+    <section class="view" id="view-pdf" aria-labelledby="h-pdf">
+      <header class="view-head with-action">
+        <div>
+          <h1 id="h-pdf">PDF 結合・分割</h1>
+          <p>ページを並べ替えて1つにまとめたり、必要なページだけ取り出したりできます</p>
+        </div>
+        <button type="button" class="btn" data-pick="pdf">PDFを追加</button>
+      </header>
+      <div class="tabs" role="tablist" aria-label="操作" id="pdf-modes">
+        <button type="button" role="tab" data-mode="merge" class="on" aria-selected="true">結合</button>
+        <button type="button" role="tab" data-mode="split" aria-selected="false">分割</button>
+        <button type="button" role="tab" data-mode="extract" aria-selected="false">ページ抜き出し</button>
+      </div>
+      <section class="card drop" data-kind="pdf" id="pdf-list">
+        <div class="drop-empty">ここにPDFをドラッグ</div>
+      </section>
+      <section class="card toolbar">
+        <div class="grow" id="pdf-field"></div>
+        <button type="button" class="btn primary" id="pdf-run" disabled>結合して保存</button>
+      </section>
+      <div class="notices"><div class="notice ok"><span class="mark">◎</span><span>ページをそのまま移すだけなので、文字や画像の画質は変わりません</span></div></div>
+    </section>
+  </main>
+</div>
+
+<div class="busy" id="busy" hidden>
+  <div class="busy-box" role="status" aria-live="polite">
+    <div id="busy-label">処理中…</div>
+    <div class="bar"><div id="busy-bar"></div></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
