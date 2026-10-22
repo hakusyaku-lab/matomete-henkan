@@ -11,20 +11,13 @@ echo   初回は数分かかります。このまま待ってください。
 echo  ===============================================
 echo.
 
-rem ---- Python を探す（3.12 を優先）----
+rem ---- Python を探す（無ければ公式版をダウンロードしてインストール）----
+echo  [1/4] Python を確認しています...
 set "PYEXE="
-for %%V in (3.12 3.13 3.11 3.10) do (
-  if not defined PYEXE (
-    for /f "delims=" %%P in ('py -%%V -c "import sys;print(sys.executable)" 2^>nul') do set "PYEXE=%%P"
-  )
-)
-if not defined PYEXE if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" set "PYEXE=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
-
-if not defined PYEXE (
-  echo  [1/4] Python が見つからないので、インストールします...
-  winget install -e --id Python.Python.3.12 --scope user --silent --accept-package-agreements --accept-source-agreements
-  if exist "%LOCALAPPDATA%\Programs\Python\Python312\python.exe" set "PYEXE=%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
-)
+set "PYFILE=%TEMP%\matomete_python_path.txt"
+if exist "%PYFILE%" del "%PYFILE%"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%APP%\scripts\find_python.ps1" -OutFile "%PYFILE%"
+if exist "%PYFILE%" set /p PYEXE=<"%PYFILE%"
 if not defined PYEXE goto :nopython
 echo  [1/4] Python: %PYEXE%
 
@@ -74,9 +67,10 @@ exit /b 0
 
 :nopython
 echo.
-echo  Python を自動でインストールできませんでした。
-echo  https://www.python.org/downloads/ から Python 3.12 をインストールし、
-echo  もう一度このファイルをダブルクリックしてください。
+echo  Python を自動でインストールできませんでした（上のメッセージを確認してください）。
+echo  インターネットにつながっているか確認して、もう一度このファイルをダブルクリックしてください。
+echo  それでもだめな場合は https://www.python.org/downloads/windows/ から
+echo  「Python 3.12」の「Windows installer (64-bit)」を入れてから、もう一度実行してください。
 echo.
 pause
 exit /b 1
