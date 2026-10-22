@@ -23,7 +23,8 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements-dev.txt
-      - run: python -m pytest -q
+      - run: python -m playwright install chromium
+      - run: python scripts/check.py
 
   build:
     needs: test

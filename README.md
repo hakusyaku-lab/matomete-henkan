@@ -57,10 +57,11 @@ pip install -r requirements-dev.txt
 python app/main.py
 ```
 
-テスト：
+全体チェック（修正したら必ず実行）：
 
 ```bash
-python -m pytest -q
+python -m playwright install chromium   # 初回だけ（画面テスト用）
+python scripts/check.py
 ```
 
 画面の開発中は環境変数 `MATOMETE_DEBUG=1` を付けて起動すると、開発者ツールが使えます。
@@ -90,12 +91,25 @@ git push origin v0.1.0
 タグを push すると、テスト → Windows版・Mac版のビルド → Releases への公開まで自動で行われます。
 バージョン番号は `app/version.py` もそろえて更新してください。
 
+## 修正・機能追加をする人へ（AI を含む）
+
+作業の前に [AGENTS.md](AGENTS.md) を読んでください。仕組みは [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)、
+追加の手順は [docs/EXTENDING.md](docs/EXTENDING.md)、変更の記録は [CHANGELOG.md](CHANGELOG.md) にあります。
+修正したら必ず `python scripts/check.py` を実行し、「合格」になることを確認してください。
+
 ## フォルダ構成
 
 ```
+AGENTS.md            修正する AI・開発者への作業ルール（最初に読む）
+CLAUDE.md            Claude 用の入口（AGENTS.md を読み込む）
+CHANGELOG.md         変更履歴
+PC環境.md            持ち主の PC のスペック（セットアップで自動作成。GitHub には上げない）
+docs/
+  ARCHITECTURE.md    全体の仕組みとファイルの役割
+  EXTENDING.md       機能・形式を追加する手順
 app/
   main.py            アプリの入口（ウィンドウ表示・画面との橋渡し）
-  version.py
+  version.py         バージョン番号
   converters/        変換処理（画面とは独立）
     text_io.py       文字コード判定・CSV の読み書き
     normalize.py     全角→半角、和暦→西暦などの整形
@@ -104,9 +118,15 @@ app/
     mapping.py       ③ 列の対応付けとテンプレート
     pdf_tools.py     ④ PDF の結合・分割・抜き出し
   ui/                画面（HTML／CSS／JavaScript）
-tests/               自動テスト
+tests/               自動テスト（変換処理・名前の一致・文字コード・画面操作）
+scripts/
+  check.py           全体チェック（修正したら必ず実行）
+  create_shortcut.ps1  デスクトップ／スタートメニューのアイコン作成
+  collect_pc_info.ps1  PC環境.md の作成
+セットアップ（Windows）.bat   Windows でのインストール
+使い方（Windows）.txt        利用者向けの説明
 build.py             配布用アプリの作成
-.github/workflows/   Windows／Mac の自動ビルド
+.github/workflows/   Windows／Mac の自動テスト・ビルド
 ```
 
 ## 設定の保存場所

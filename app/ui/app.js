@@ -7,10 +7,8 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const debounce = (fn, ms = 250) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
 
-  const OPS = [
-    ['hankaku', '英数を半角'], ['kana_zenkaku', '半角カナを全角'], ['wareki', '和暦→西暦'], ['kishu', '機種依存文字'],
-    ['remove_comma', 'カンマ除去'], ['trim', '空白除去'], ['remove_newline', '改行除去'],
-  ];
+  // 列の加工の一覧は Python 側（converters/normalize.py の OP_LABELS）が正。起動時に app_info で受け取る。
+  let OPS = [];
 
   const S = {
     view: 'csv',
@@ -615,7 +613,11 @@
     renderMap();
     renderPdf();
     const info = await call('app_info');
-    if (info) $('#version').textContent = `バージョン ${info.version}`;
+    if (info) {
+      $('#version').textContent = `バージョン ${info.version}`;
+      OPS = Object.entries(info.op_labels || {});
+      renderMap();
+    }
     tplRefresh();
   }
 

@@ -1,0 +1,26 @@
+# エディタの保存形式をそろえる（対応エディタが自動で従います）
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.{js,css,html,json,yml,yaml}]
+indent_size = 2
+
+[*.bat]
+# Shift_JIS（cp932）＋ CRLF。UTF-8 で保存すると日本語が文字化けして動かなくなる
+charset = unset
+end_of_line = crlf
+
+[*.ps1]
+# BOM 付き UTF-8 ＋ CRLF（Windows PowerShell 5 の文字化け対策）
+charset = utf-8-bom
+end_of_line = crlf
+
+[*.txt]
+charset = utf-8-bom
+end_of_line = crlf

@@ -1,0 +1,10 @@
+# 改行コードを固定する（Windows の .bat / .ps1 は CRLF でないと動かないことがある）
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.txt text eol=crlf
+*.ico binary
+*.png binary
+*.jpg binary
+*.pdf binary
+*.xlsx binary

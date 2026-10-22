@@ -46,6 +46,9 @@ if errorlevel 1 goto :fail
 if errorlevel 1 goto :fail
 echo  [3/4] 部品 OK
 
+rem ---- PC環境を記録する（AI が修正するときの参照用）----
+powershell -NoProfile -ExecutionPolicy Bypass -File "%APP%\scripts\collect_pc_info.ps1" -AppDir "%APP%"
+
 rem ---- ショートカットを作る ----
 echo  [4/4] デスクトップとスタートメニューにアイコンを作っています...
 powershell -NoProfile -ExecutionPolicy Bypass -File "%APP%\scripts\create_shortcut.ps1" -AppDir "%APP%"
