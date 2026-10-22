@@ -2,6 +2,11 @@
 
 新しいものが上。書き方：`## [バージョン] - 日付` の下に「追加」「変更」「修正」「削除」で分けて日本語で書く。
 
+## [0.4.2] - 2026-10-22
+
+### 変更
+- GitHub の自動ビルドで使う部品（actions）を最新版に更新（checkout v7、setup-python v7、upload-artifact v7、download-artifact v8、action-gh-release v3）。Node.js 20 の非推奨警告への対策で、アプリの中身は変わりません
+
 ## [0.4.1] - 2026-10-22
 
 ### 修正
