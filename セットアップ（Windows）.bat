@@ -46,6 +46,17 @@ if errorlevel 1 goto :fail
 if errorlevel 1 goto :fail
 echo  [3/4] 部品 OK
 
+rem ---- 変更履歴（git）を復元する：初回だけ。git が無ければ飛ばす ----
+if not exist "%APP%\.git" if exist "%APP%\変更履歴.bundle" (
+  where git >nul 2>nul && (
+    echo  変更履歴（git）を準備しています...
+    git -C "%APP%" init -q -b main
+    git -C "%APP%" fetch -q "%APP%\変更履歴.bundle" main
+    git -C "%APP%" reset -q --mixed FETCH_HEAD
+    git -C "%APP%" checkout -q -- .github
+  )
+)
+
 rem ---- PC環境を記録する（AI が修正するときの参照用）----
 powershell -NoProfile -ExecutionPolicy Bypass -File "%APP%\scripts\collect_pc_info.ps1" -AppDir "%APP%"
 
